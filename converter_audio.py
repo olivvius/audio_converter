@@ -30,6 +30,7 @@ class SingleAudioConverter(QWidget):
         self.formats = config.get('audio', 'formats').split(',')
         self.formats_list = ' '.join(f'*.{format}' for format in self.formats)
         self.format_combo = QComboBox()
+        
         self.format_combo.addItems(self.formats)
         self.layout.addWidget(self.format_combo)
 
@@ -48,15 +49,20 @@ class SingleAudioConverter(QWidget):
         self.begin_input = None
         self.end_input = None
 
+        hbox = QHBoxLayout()
         self.begin_label = QLabel("debut (sec):")
-        self.layout.addWidget(self.begin_label)
         self.begin_input = QLineEdit(self)
-        self.layout.addWidget(self.begin_input)
-
+        vbox1 = QVBoxLayout()
+        vbox1.addWidget(self.begin_label)
+        vbox1.addWidget(self.begin_input)
         self.end_label = QLabel("fin (sec):")
-        self.layout.addWidget(self.end_label)
         self.end_input = QLineEdit(self)
-        self.layout.addWidget(self.end_input)
+        vbox2 = QVBoxLayout()
+        vbox2.addWidget(self.end_label)
+        vbox2.addWidget(self.end_input)
+        hbox.addLayout(vbox1)
+        hbox.addLayout(vbox2)
+        self.layout.addLayout(hbox)
 
         self.convert_button = QPushButton("Conversion")
         self.convert_button.clicked.connect(self.convert_file)
@@ -84,6 +90,7 @@ class SingleAudioConverter(QWidget):
         self.positive_error = lang_dict["positive_error"]
         self.converting_text = lang_dict["converting"]
         self.complete_conversion_text = lang_dict["complete_conversion"]
+        
 
     def choose_file(self):
 

@@ -11,7 +11,8 @@ class MassAudioConverter(QWidget):
         super().__init__(parent)
         
         self.layout = QVBoxLayout(self)
-        self.folder_button = QPushButton("Choisir fichier")
+
+        self.folder_button = QPushButton("")
         self.folder_button.clicked.connect(self.choose_directory)
         self.layout.addWidget(self.folder_button)
 
@@ -51,6 +52,7 @@ class MassAudioConverter(QWidget):
 
     def load_language(self, lang_dict):
         self.folder_button.setText(lang_dict["choose_directory"])
+        self.choose_directory_text = lang_dict["choose_directory"]
         self.format_label.setText(lang_dict["output_format"])
         self.samplerate_label.setText(lang_dict["output_samplerate"])
         self.convert_button.setText(lang_dict["convert"])
@@ -59,14 +61,21 @@ class MassAudioConverter(QWidget):
         self.audio_files = lang_dict["audio_files"]
         self.conversion = lang_dict["conversion"]
         self.suffix_label.setText(lang_dict["output_suffix"])
+        self.converting_file_text = lang_dict["converting_file"]
+        self.complete_conversion_text = lang_dict["complete_conversion"]
+        self.error_text = lang_dict["error"]
 
 
     def choose_directory(self):
-        directory = QFileDialog.getExistingDirectory(self, "Choose Directory")
+        directory = QFileDialog.getExistingDirectory(self, self.choose_directory_text)
         if directory:
             self.folder_label.setText(directory)
 
     def convert_file(self):
+        if self.folder_label.text() == "":
+            QMessageBox.warning(self, "Warning", "Please choose a directory")
+            return
+
         selected_format = self.format_combo.currentText().lower()
         selected_samplerate = int(self.samplerate_combo.currentText())
         source_directory = self.folder_label.text()
@@ -78,6 +87,9 @@ class MassAudioConverter(QWidget):
 
         for file in files:
             source_file = os.path.join(source_directory, file)
+            converted_files += 1
+            self.progress_label.setText(f" {self.converting_file_text} {converted_files} / {total_files}")
+            QApplication.processEvents()
             try:
                 data, samplerate = sf.read(source_file)
                 output_file = source_file.rsplit('.', 1)[0] + suffix + '.' + selected_format
@@ -88,15 +100,13 @@ class MassAudioConverter(QWidget):
                 else:
                     sf.write(output_file, data, selected_samplerate, format=selected_format)
                 
-                converted_files += 1
-                self.progress_label.setText(f" Converting file : {converted_files} / {total_files}")
-                QApplication.processEvents()
+
 
             except Exception as e:
-                print(f"Error converting file {file}: {e}")
+                print(f"{self.error_text} {file}: {e}")
                 continue
         
-        self.progress_label.setText("Conversion complete")
+        self.progress_label.setText(self.complete_conversion_text)
         QApplication.processEvents()
         sleep(2)
         self.progress_label.setText("")

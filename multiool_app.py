@@ -5,10 +5,10 @@ from PyQt5.QtCore import Qt
 import configparser
 from converter_audio import SingleAudioConverter
 from mass_converter_audio import MassAudioConverter
-# from converter_image import ImageConversionTab
 from menu import Menu
 import json
 from LanguageLoader import LanguageLoader
+from MetadataEditor import MetadataEditor
 
 class MultiToolApp(QMainWindow):
     def __init__(self):
@@ -40,11 +40,11 @@ class MultiToolApp(QMainWindow):
         
         self.single_audio_tab = SingleAudioConverter(self)
         self.mass_audio_tab = MassAudioConverter(self)
-        # self.image_tab = ImageConversionTab()
+        self.metadata_tab = MetadataEditor(self)
 
         self.tabs.addTab(self.single_audio_tab, "")
         self.tabs.addTab(self.mass_audio_tab, "")
-        # self.tabs.addTab(self.image_tab, "")
+        self.tabs.addTab(self.metadata_tab, "")
 
         self.language_loader.load_language('english')     
         

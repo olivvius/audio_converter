@@ -35,5 +35,6 @@
     "begin_error" : "La valeur de début est supérieure à la valeur de fin",
     "positive_error":"Les timestamps de début et de fin doivent être positifs.",
     "converting" : "Conversion du fichier... Veuillez patienter",
-    "complete_conversion": "Conversion terminée"
+    "complete_conversion": "Conversion terminee",
+    "converting_file":"Conversion du fichier: "
 }

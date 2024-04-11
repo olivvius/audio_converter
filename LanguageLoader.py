@@ -12,7 +12,9 @@ class LanguageLoader:
         self.app.setWindowTitle(self.lang["title"])
         self.app.tabs.setTabText(0, self.lang["single_audio_converter"])
         self.app.tabs.setTabText(1, self.lang["mass_audio_converter"])
+        self.app.tabs.setTabText(2, self.lang["MetadataEditor"])
 
         self.app.menu.load_language(self.lang)
         self.app.single_audio_tab.load_language(self.lang)
         self.app.mass_audio_tab.load_language(self.lang)
+        self.app.metadata_tab.load_language(self.lang)

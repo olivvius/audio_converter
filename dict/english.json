@@ -1,6 +1,7 @@
 {
     "single_audio_converter": "Single Audio Converter",
     "mass_audio_converter": "Mass Audio Converter",
+    "MetadataEditor":"Metadata Editor",
     "title": "Multitool Audio App",
     "file": "File",
     "edit": "Edit",
@@ -35,5 +36,7 @@
     "begin_error" : "Begin value is greater than end value",
     "positive_error":" The begin and end timestamps must be positive.",
     "converting" : "Converting file... Please wait",
-    "complete_conversion": "Conversion complete"
+    "complete_conversion": "Conversion complete",
+    "converting_file":"Converting file :",
+    "artist": "Artist"
 }
