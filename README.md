@@ -2,7 +2,7 @@
 
 ![](screen.png?raw=true "screen")
 
-## Description
+## ✨ Description
 This is an audio converter application built using PyQt5 and Python. The application allows you to convert audio files into different formats and sample rates. it also allows you to convert a entire folder of audio files. Finally, you can edit metadatas of all audio files of a folder. The app is available in english, spanish, french and hindi.
 
 ## 🛠 Prerequisites
