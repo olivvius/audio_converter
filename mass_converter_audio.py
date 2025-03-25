@@ -1,4 +1,5 @@
-import sys, os
+import sys
+import os
 from time import sleep
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QTabWidget, QLabel, QPushButton, QFileDialog, QMessageBox, QHBoxLayout, QComboBox, QLineEdit
 from PyQt5.QtGui import QPixmap
@@ -6,10 +7,11 @@ from PyQt5.QtCore import Qt
 import configparser
 import soundfile as sf
 
+
 class MassAudioConverter(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
-        
+
         self.layout = QVBoxLayout(self)
 
         self.folder_button = QPushButton("")
@@ -17,7 +19,7 @@ class MassAudioConverter(QWidget):
         self.layout.addWidget(self.folder_button)
 
         self.folder_label = QLabel()
-        self.layout.addWidget(self.folder_label) 
+        self.layout.addWidget(self.folder_label)
 
         self.format_label = QLabel("Format de sortie:")
         self.layout.addWidget(self.format_label)
@@ -65,9 +67,9 @@ class MassAudioConverter(QWidget):
         self.complete_conversion_text = lang_dict["complete_conversion"]
         self.error_text = lang_dict["error"]
 
-
     def choose_directory(self):
-        directory = QFileDialog.getExistingDirectory(self, self.choose_directory_text)
+        directory = QFileDialog.getExistingDirectory(
+            self, self.choose_directory_text)
         if directory:
             self.folder_label.setText(directory)
 
@@ -88,27 +90,28 @@ class MassAudioConverter(QWidget):
         for file in files:
             source_file = os.path.join(source_directory, file)
             converted_files += 1
-            self.progress_label.setText(f" {self.converting_file_text} {converted_files} / {total_files}")
+            self.progress_label.setText(
+                f" {self.converting_file_text} {converted_files} / {total_files}")
             QApplication.processEvents()
             try:
                 data, samplerate = sf.read(source_file)
-                output_file = source_file.rsplit('.', 1)[0] + suffix + '.' + selected_format
-                
+                output_file = source_file.rsplit(
+                    '.', 1)[0] + suffix + '.' + selected_format
+
                 if selected_format == 'raw':
                     subtype = 'PCM_16'
-                    sf.write(output_file, data, selected_samplerate, subtype=subtype)
+                    sf.write(output_file, data,
+                             selected_samplerate, subtype=subtype)
                 else:
-                    sf.write(output_file, data, selected_samplerate, format=selected_format)
-                
-
+                    sf.write(output_file, data, selected_samplerate,
+                             format=selected_format)
 
             except Exception as e:
                 print(f"{self.error_text} {file}: {e}")
                 continue
-        
+
         self.progress_label.setText(self.complete_conversion_text)
         QApplication.processEvents()
         sleep(2)
         self.progress_label.setText("")
         QApplication.processEvents()
-

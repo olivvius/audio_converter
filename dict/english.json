@@ -38,5 +38,13 @@
     "converting" : "Converting file... Please wait",
     "complete_conversion": "Conversion complete",
     "converting_file":"Converting file :",
-    "artist": "Artist"
+    "warning":"Warning",
+    "modified_metadata":"Metadata modifcation completed.",
+    "unsupported":"Unsupported file format",
+    "artist": "Artist",
+    "album": "Album",
+    "genre": "Genre",
+    "date": "Date",
+    "year": "Year",
+    "apply": "Apply"
 }

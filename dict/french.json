@@ -1,6 +1,7 @@
 {
     "single_audio_converter": "Convertisseur Audio Simple",
     "mass_audio_converter": "Convertisseur Audio de Masse",
+    "MetadataEditor": "Editeur de Metadata",
     "title": "Multitool Audio App",
     "file": "Fichier",
     "edit": "Éditer",
@@ -11,7 +12,7 @@
     "quit": "Quitter",
     "copy": "Copier",
     "paste": "Coller",
-    "about": "À propos",
+    "about": "A propos",
     "settings": "Parametres",
     "preferences": "Preferences",
     "view_help": "Voir l'aide",
@@ -36,5 +37,14 @@
     "positive_error":"Les timestamps de début et de fin doivent être positifs.",
     "converting" : "Conversion du fichier... Veuillez patienter",
     "complete_conversion": "Conversion terminee",
-    "converting_file":"Conversion du fichier: "
+    "converting_file":"Conversion du fichier: ",
+    "warning":"Warning",
+    "modified_metadata":"Metadata modifcation completed.",
+    "unsupported":"format non supporte",
+    "artist": "Artiste",
+    "album": "Album",
+    "genre": "Genre",
+    "date": "Date",
+    "year": "Annee",
+    "apply": "Appliquer"
 }

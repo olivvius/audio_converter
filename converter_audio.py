@@ -8,18 +8,19 @@ import soundfile as sf
 import numpy as np
 from scipy import signal
 
+
 class SingleAudioConverter(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
-        
+
         self.layout = QVBoxLayout(self)
-        
+
         self.file_button = QPushButton("Choisir fichier")
         self.file_button.clicked.connect(self.choose_file)
         self.layout.addWidget(self.file_button)
 
         self.file_label = QLabel()
-        self.layout.addWidget(self.file_label) 
+        self.layout.addWidget(self.file_label)
 
         self.format_label = QLabel("Format de sortie:")
         self.layout.addWidget(self.format_label)
@@ -30,7 +31,7 @@ class SingleAudioConverter(QWidget):
         self.formats = config.get('audio', 'formats').split(',')
         self.formats_list = ' '.join(f'*.{format}' for format in self.formats)
         self.format_combo = QComboBox()
-        
+
         self.format_combo.addItems(self.formats)
         self.layout.addWidget(self.format_combo)
 
@@ -90,14 +91,14 @@ class SingleAudioConverter(QWidget):
         self.positive_error = lang_dict["positive_error"]
         self.converting_text = lang_dict["converting"]
         self.complete_conversion_text = lang_dict["complete_conversion"]
-        
 
     def choose_file(self):
 
-        filename, _ = QFileDialog.getOpenFileName(self, self.choose_file_text, "", f"{self.audio_files} ({self.formats_list})")
+        filename, _ = QFileDialog.getOpenFileName(
+            self, self.choose_file_text, "", f"{self.audio_files} ({self.formats_list})")
         if filename:
             self.file_label.setText(filename)
-        
+
     def convert_file(self):
 
         if self.file_label.text() == "":
@@ -107,7 +108,8 @@ class SingleAudioConverter(QWidget):
             begin = int(self.begin_input.text())
             end = int(self.end_input.text())
         except Exception as e:
-            QMessageBox.critical(self, self.error_text, self.integer_value_error)
+            QMessageBox.critical(self, self.error_text,
+                                 self.integer_value_error)
             return
         if begin > end:
             QMessageBox.critical(self, self.error_text, self.begin_error)
@@ -115,7 +117,7 @@ class SingleAudioConverter(QWidget):
         if begin < 0 or end < 0:
             QMessageBox.critical(self, self.error_text, self.positive_error)
             return
-        
+
         self.progress_label.setText(self.converting_text)
         QApplication.processEvents()
 
@@ -123,37 +125,44 @@ class SingleAudioConverter(QWidget):
         selected_samplerate = int(self.samplerate_combo.currentText())
         source_file = self.file_label.text()
         suffix = self.suffix_input.text()
-        
-        output_file = source_file.rsplit('.', 1)[0] + suffix + '.' + selected_format
+
+        output_file = source_file.rsplit(
+            '.', 1)[0] + suffix + '.' + selected_format
         data, samplerate = sf.read(source_file)
-        resampled_data = signal.resample(data, int(len(data) * selected_samplerate / samplerate))
+        resampled_data = signal.resample(
+            data, int(len(data) * selected_samplerate / samplerate))
         data = resampled_data
 
         samplerate = selected_samplerate
-        
-        try: 
-            if self.begin_input.text() == "" and self.end_input.text() == "" :
+
+        try:
+            if self.begin_input.text() == "" and self.end_input.text() == "":
                 if selected_format == 'raw':
                     subtype = 'PCM_16'
                     sf.write(output_file, data, samplerate, subtype=subtype)
                 else:
-                    sf.write(output_file, data, samplerate, format=selected_format)
+                    sf.write(output_file, data, samplerate,
+                             format=selected_format)
             else:
                 try:
-                    begin = int(self.begin_input.text()) if self.begin_input.text().strip() else 0
-                    end = int(self.end_input.text()) if self.end_input.text().strip() else len(resampled_data)
+                    begin = int(self.begin_input.text()
+                                ) if self.begin_input.text().strip() else 0
+                    end = int(self.end_input.text()) if self.end_input.text(
+                    ).strip() else len(resampled_data)
                 except Exception as e:
                     QMessageBox.critical(self, self.error_text, str(e))
-                
+
                 data = data[int(begin * samplerate):int(end * samplerate)]
 
                 if selected_format == 'raw':
                     subtype = 'PCM_16'
                     sf.write(output_file, data, samplerate, subtype=subtype)
                 else:
-                    sf.write(output_file, data, samplerate, format=selected_format)
+                    sf.write(output_file, data, samplerate,
+                             format=selected_format)
 
-            QMessageBox.information(self, self.conversion, f"{self.converted_text} {output_file}")
+            QMessageBox.information(
+                self, self.conversion, f"{self.converted_text} {output_file}")
         except Exception as e:
             QMessageBox.critical(self, self.error_text, str(e))
 

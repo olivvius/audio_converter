@@ -1,10 +1,15 @@
 from PyQt5.QtWidgets import QMainWindow, QAction, QMenu, QApplication
 import sys
 import json
+from PyQt5.QtCore import QSettings
+from PyQt5.QtWidgets import QWidget
+import os
+
 
 class Menu:
     def __init__(self, window):
         self.window = window
+        self.settings = QSettings("settings.ini", QSettings.IniFormat)
         self.initUI()
 
     def initUI(self):
@@ -28,12 +33,30 @@ class Menu:
 
         self.languageMenu = QMenu('Language', self.window)
         self.englishAct = QAction('English', self.window)
-        self.englishAct.triggered.connect(lambda: self.window.language_loader.load_language('english'))
         self.frenchAct = QAction('French', self.window)
-        self.frenchAct.triggered.connect(lambda: self.window.language_loader.load_language('french'))
+        self.spanishAct = QAction('Spanish', self.window)
+        self.hindiAct = QAction('Hindi', self.window)
+        self.englishAct.triggered.connect(
+            lambda: self.window.language_loader.load_language('english'))
+        self.frenchAct.triggered.connect(
+            lambda: self.window.language_loader.load_language('french'))
+        self.spanishAct.triggered.connect(
+            lambda: self.window.language_loader.load_language('spanish'))
+        self.hindiAct.triggered.connect(
+            lambda: self.window.language_loader.load_language('hindi'))
         self.languageMenu.addAction(self.englishAct)
         self.languageMenu.addAction(self.frenchAct)
+        self.languageMenu.addAction(self.spanishAct)
+        self.languageMenu.addAction(self.hindiAct)
         menubar.addMenu(self.languageMenu)
+
+        self.themeMenu = menubar.addMenu('Theme')
+        self.lightThemeAct = QAction('Light', self.window)
+        self.lightThemeAct.triggered.connect(lambda: self.load_theme('light'))
+        self.darkThemeAct = QAction('Dark', self.window)
+        self.darkThemeAct.triggered.connect(lambda: self.load_theme('dark'))
+        self.themeMenu.addAction(self.lightThemeAct)
+        self.themeMenu.addAction(self.darkThemeAct)
 
     def load_language(self, lang_dict):
         self.fileMenu.setTitle(lang_dict["file"])
@@ -46,3 +69,45 @@ class Menu:
         self.languageMenu.setTitle(lang_dict["language"])
         self.englishAct.setText(lang_dict["english"])
         self.frenchAct.setText(lang_dict["french"])
+
+    def load_theme(self, theme_name):
+        self.settings.beginGroup(theme_name)
+
+        font = self.settings.value('font', 'Arial')
+        font_size = int(self.settings.value('font_size', 12))
+        font_color = self.settings.value('font_color', '#000000')
+        background_color = self.settings.value('background_color', '#FFFFFF')
+
+        self.settings.endGroup()
+
+        style = f"""
+            QWidget {{
+                background-color: {background_color};
+                font-family: {font};
+                font-size: {font_size}px;
+                color: {font_color};
+            }}
+            QTabBar::tab {{
+                background: {background_color};
+                color: {font_color};
+            }}
+            QTabBar::tab:selected {{
+                background: {background_color};
+                color: {font_color};
+            }}
+            QTabWidget::pane {{
+                border: 0;
+                background: {background_color};
+            }}
+        """
+        self.window.setStyleSheet(style)
+
+        for widget in self.window.findChildren(QWidget):
+            QApplication.instance().style().unpolish(widget)
+            QApplication.instance().style().polish(widget)
+            widget.update()
+
+        self.save_settings(theme_name)
+
+    def save_settings(self, theme_name):
+        self.settings.setValue('theme', theme_name)

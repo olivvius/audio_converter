@@ -1,9 +1,12 @@
 import json
+from PyQt5.QtCore import QSettings
+
 
 class LanguageLoader:
     def __init__(self, app):
         self.app = app
         self.lang = {}
+        self.settings = QSettings("settings.ini", QSettings.IniFormat)
 
     def load_language(self, language):
         with open(f'dict/{language}.json', 'r') as f:
@@ -18,3 +21,8 @@ class LanguageLoader:
         self.app.single_audio_tab.load_language(self.lang)
         self.app.mass_audio_tab.load_language(self.lang)
         self.app.metadata_tab.load_language(self.lang)
+
+        self.save_settings(language)
+
+    def save_settings(self, language):
+        self.settings.setValue('language', language)
