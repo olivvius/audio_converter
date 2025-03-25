@@ -1,18 +1,18 @@
-# Audio Converter
-
-This is an audio converter application built using PyQt5 and Python. The application allows you to convert audio files into different formats and sample rates. it also allows you to convert a entire folder of audio files. Finally, you can edit metadatas of all audio files of a folder. The app is available in english, spanish, french and hindi.
+# 🌟 Audio Converter
 
 ![](screen.png?raw=true "screen")
 
+## Description
+This is an audio converter application built using PyQt5 and Python. The application allows you to convert audio files into different formats and sample rates. it also allows you to convert a entire folder of audio files. Finally, you can edit metadatas of all audio files of a folder. The app is available in english, spanish, french and hindi.
 
-## Prerequisites
+## 🛠 Prerequisites
 
 - Python 3.11.11
 - PyEnv (for managing Python versions)
 - PyQt5
 - Other dependencies listed in `requirements.txt`
 
-## Setup
+## 🚀 Setup
 
 Follow the steps below to set up and run the application on your local machine.
 
@@ -58,7 +58,6 @@ pip install -r requirements.txt
 
 ### 4. Run the application
 
-
 ```bash
 python3 converter.py
 ```
@@ -69,3 +68,12 @@ python3 converter.py
 pip install pyinstaller
 pyinstaller --onefile --windowed converter.py
 ```
+
+## 👥 Contribution
+
+You can collaborate to this project without asking, please respect pep8 convention.
+
+## 📄 Licence
+
+Apache-2.0 License
+
